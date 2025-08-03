@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPAREPART MENU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+        }
+        .menu-button {
+            transition: all 0.3s ease;
+            transform: perspective(500px) translateZ(0);
+        }
+        .menu-button:hover {
+            transform: perspective(500px) translateZ(20px);
+            background: linear-gradient(45deg, #4a90e2, #63b3ed);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="text-4xl font-bold text-center text-white mb-8">SPAREPART MENU</h1>
+        <div class="space-y-4">
+            <a href="https://call-iota-two.vercel.app/" 
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+                รายงาน Call ค้างประจำวัน
+            </a>
+            <a href="https://nawahovvp.github.io/TSCReport/" 
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+                รายงานการเก็บคืนเครื่อง TSC
+            </a>
+            <a href="https://nawahovvp.github.io/Stockday/" 
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+                รายงาน Stock Day คลังสินค้าทั่วประเทศ
+            </a>
+            <a href="https://s-crap-x.vercel.app/" 
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+                รายงานการฝากอะไหล่ของช่างทั่วประเทศ
+            </a>
+        </div>
+    </div>
+</body>
+</html>
