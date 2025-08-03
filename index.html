@@ -6,60 +6,158 @@
     <title>SPAREPART MENU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
         body {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+        .fire-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
         .card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 1.5rem;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 69, 0, 0.5);
             padding: 2rem;
             width: 100%;
             max-width: 600px;
+            position: relative;
+            z-index: 1;
         }
         .menu-button {
             transition: all 0.3s ease;
             transform: perspective(500px) translateZ(0);
+            border: 2px solid #ff4500;
+            text-shadow: 0 0 5px rgba(255, 69, 0, 0.8);
         }
         .menu-button:hover {
             transform: perspective(500px) translateZ(20px);
-            background: linear-gradient(45deg, #4a90e2, #63b3ed);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #ff4500, #ff8c00);
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.5);
+            color: #fff;
         }
         h1 {
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            color: #ff4500;
+            text-shadow: 0 0 10px #ff4500, 0 0 20px #ff8c00, 0 0 30px #ff8c00;
+            animation: flicker 1.5s infinite alternate;
+            letter-spacing: 2px;
+            font-size: 3.5rem;
+        }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 
+                    0 0 10px #ff4500,
+                    0 0 20px #ff8c00,
+                    0 0 30px #ff8c00,
+                    0 0 40px #ffa500;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
         }
     </style>
 </head>
 <body>
+    <canvas id="fireCanvas" class="fire-background"></canvas>
     <div class="card">
-        <h1 class="text-4xl font-bold text-center text-white mb-8">SPAREPART MENU</h1>
+        <h1 class="text-5xl font-bold text-center mb-8">SPAREPART MENU</h1>
         <div class="space-y-4">
             <a href="https://call-iota-two.vercel.app/" 
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-orange-300 bg-gray-900 rounded-lg hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 transition-all duration-300">
                 รายงาน Call ค้างประจำวัน
             </a>
             <a href="https://nawahovvp.github.io/TSCReport/" 
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-orange-300 bg-gray-900 rounded-lg hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 transition-all duration-300">
                 รายงานการเก็บคืนเครื่อง TSC
             </a>
             <a href="https://nawahovvp.github.io/Stockday/" 
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-orange-300 bg-gray-900 rounded-lg hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 transition-all duration-300">
                 รายงาน Stock Day คลังสินค้าทั่วประเทศ
             </a>
             <a href="https://s-crap-x.vercel.app/" 
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-white bg-gray-800 rounded-lg hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300">
+               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold text-orange-300 bg-gray-900 rounded-lg hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 transition-all duration-300">
                 รายงานการฝากอะไหล่ของช่างทั่วประเทศ
             </a>
         </div>
     </div>
+    <script>
+        const canvas = document.getElementById('fireCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 300;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.speed = Math.random() * 5 + 2;
+                this.size = Math.random() * 5 + 2;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.color = `hsl(${Math.random() * 30 + 10}, 100%, 50%)`;
+            }
+
+            update() {
+                this.y -= this.speed;
+                this.opacity -= 0.005;
+                if (this.opacity <= 0 || this.y < 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>
