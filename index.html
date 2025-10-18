@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPAREPART MENU</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
         body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: 'Mali', cursive;
+            font-family: 'Inter', sans-serif;
             overflow: hidden;
-            background: linear-gradient(135deg, #d6eaff, #b1d4ff);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: 400% 400%;
+            animation: none; /* Remove any CSS animation to let GSAP handle it */
         }
         .bubble-background {
             position: fixed;
@@ -26,185 +29,421 @@
             z-index: -1;
         }
         .card {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(12px);
-            border-radius: 2rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            border: 2px solid #a1c4fd;
-            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             position: relative;
             z-index: 1;
-            overflow: visible;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
         }
         .menu-button {
-            transition: all 0.3s ease;
-            transform: scale(1);
-            border: 2px solid #a1c4fd;
-            background: #f0f7ff;
-            color: #6b7280;
-            font-weight: 600;
-            border-radius: 1.5rem;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            color: #374151;
+            font-weight: 500;
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(20px);
         }
-        .menu-button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(45deg, #a1c4fd, #d6eaff);
-            box-shadow: 0 6px 15px rgba(161, 196, 253, 0.4);
-            color: #fff;
+        .menu-button .icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
         }
         h1 {
-            font-family: 'Mali', cursive;
-            color: #4b5dfa;
-            text-shadow: 0 0 8px #a1c4fd, 0 0 16px #d6eaff;
-            animation: bounce 2s infinite;
-            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            font-weight: 900;
+            letter-spacing: -0.025em;
             font-size: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: scale(0.8);
         }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
+        .logout-button {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        .logout-button:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        .login-input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .login-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.25rem;
+            user-select: none;
+        }
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .login-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: #374151;
         }
         .cat-animation {
-            position: absolute;
-            font-size: 2rem;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            z-index: 2;
-            animation: catRun 12s linear infinite;
+            display: none; /* ลบแอนิเมชันแมวเพื่อความโมเดิร์น */
         }
-        @keyframes catRun {
-            /* เดินช้า: มุมบนซ้ายไปบนขวา */
-            0% {
-                top: -20px;
-                left: -20px;
-                transform: rotate(0deg);
-            }
-            20% {
-                top: -20px;
-                left: calc(100% - 20px);
-                transform: rotate(10deg);
-            }
-            /* วิ่งเร็ว: มุมบนขวาไปล่างขวา */
-            30% {
-                top: calc(100% - 20px);
-                left: calc(100% - 20px);
-                transform: rotate(90deg);
-            }
-            /* เดินช้า: มุมล่างขวาไปล่างซ้าย */
-            50% {
-                top: calc(100% - 20px);
-                left: -20px;
-                transform: rotate(180deg);
-            }
-            /* วิ่งเร็ว: มุมล่างซ้ายไปบนซ้าย */
-            60% {
-                top: -20px;
-                left: -20px;
-                transform: rotate(360deg);
-            }
-            100% {
-                top: -20px;
-                left: -20px;
-                transform: rotate(360deg);
-            }
+        /* ลบ bubble animation เพื่อความเรียบง่าย */
+        #bubbleCanvas {
+            display: none;
+        }
+        .menu-container {
+            opacity: 0;
+            visibility: hidden;
         }
     </style>
 </head>
 <body>
-    <canvas id="bubbleCanvas" class="bubble-background"></canvas>
-    <div class="card">
-        <div class="cat-animation">😺</div>
-        <h1 class="text-5xl font-bold text-center mb-8">SPAREPART MENU</h1>
-        <div class="space-y-4">
-            <a href="https://call-iota-two.vercel.app/"
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold">
-               รายงาน Call ค้างประจำวัน
-            </a>
-            <a href="https://nawahovvp.github.io/TSCReport/"
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold">
-               รายงานการเก็บคืนเครื่อง TSC
-            </a>
-            <a href="https://nawahovvp.github.io/Stockday/"
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold">
-               รายงาน Stock Day คลังสินค้าทั่วประเทศ
-            </a>
-            <a href="https://s-crap-x.vercel.app/"
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold">
-               รายงานการอะไหล่เสียช่าง ฝากคลังสินค้าทั่วประเทศ
-            </a>
-            <a href="https://nawahovvp.github.io/ASSET/"
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold">
-               รายการทรัพย์สินคลังสินค้า
-            </a>
-            <a href="https://nawahovvp.github.io/StockdayIndex/"
-               class="menu-button block w-full py-4 px-6 text-center text-lg font-semibold">
-               รายการมูลค่าอะไหล่ต่อสาขา
-            </a>
+    <div id="login-container" class="login-container">
+        <div class="login-card">
+            <h2 style="font-family: 'Inter', sans-serif; color: #1f2937; font-weight: 700; font-size: 1.75rem; text-align: center; margin-bottom: 2rem;">เข้าสู่ระบบ</h2>
+            <form id="login-form">
+                <input type="text" id="username" class="login-input" placeholder="ชื่อผู้ใช้" required>
+                <div class="login-input-wrapper">
+                    <input type="password" id="password" class="login-input" placeholder="รหัสผ่าน" required>
+                    <span id="eye-icon" class="eye-icon">👁️</span>
+                </div>
+                <label class="remember-me">
+                    <input type="checkbox" id="remember-me"> จดจำข้อมูล
+                </label>
+                <button type="submit" class="login-button">เข้าสู่ระบบ</button>
+            </form>
+        </div>
+    </div>
+    <div id="menu-container" class="menu-container">
+        <div class="card">
+            <h1 class="mb-8">SPAREPART MENU</h1>
+            <div class="space-y-3">
+                <a href="https://call-iota-two.vercel.app/" class="menu-button">
+                    <span class="icon">📞</span>
+                    รายงาน Call ค้างประจำวัน
+                </a>
+                <a href="https://nawahovvp.github.io/Stockday/" class="menu-button">
+                    <span class="icon">📦</span>
+                    รายงาน Stock Day คลังสินค้าทั่วประเทศ
+                </a>
+                <a href="https://s-crap-x.vercel.app/" class="menu-button">
+                    <span class="icon">🔧</span>
+                    รายงานการอะไหล่เสียช่าง ฝากคลังสินค้าทั่วประเทศ
+                </a>
+                <a href="https://nawahovvp.github.io/ASSET/" class="menu-button">
+                    <span class="icon">🏢</span>
+                    รายการทรัพย์สินคลังสินค้า
+                </a>
+                <a href="https://nawahovvp.github.io/DashboardTSC/" class="menu-button">
+                    <span class="icon">📊</span>
+                    Dashboard TSC Management
+                </a>
+            </div>
+            <button id="logout-button" class="logout-button">
+                <span>🚪</span>
+                Log out
+            </button>
         </div>
     </div>
     <script>
-        const canvas = document.getElementById('bubbleCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const particles = [];
-        const particleCount = 100;
-        class Particle {
-            constructor() {
-                this.reset();
+        gsap.registerPlugin();
+
+        // Background gradient animation with GSAP - smoother with sine.inOut ease
+        gsap.to("body", {
+            duration: 25,
+            backgroundPosition: "100% 50%",
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true
+        });
+
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        let isPasswordVisible = false;
+
+        eyeIcon.addEventListener('click', () => {
+            isPasswordVisible = !isPasswordVisible;
+            if (isPasswordVisible) {
+                passwordInput.type = 'text';
+                eyeIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.textContent = '👁️';
             }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height;
-                this.speed = Math.random() * 3 + 1;
-                this.size = Math.random() * 10 + 5;
-                this.opacity = Math.random() * 0.5 + 0.3;
-                this.color = ['#b1d4ff', '#ffb1cc', '#ffffff'][Math.floor(Math.random() * 3)];
-                this.angle = Math.random() * Math.PI * 2;
-            }
-            update() {
-                this.y -= this.speed;
-                this.x += Math.sin(this.angle) * 0.5;
-                this.angle += 0.02;
-                this.opacity -= 0.002;
-                if (this.opacity <= 0 || this.y < 0) {
-                    this.reset();
+        });
+
+        // Login functionality
+        const correctUser = 'Admin';
+        const correctPass = '1234';
+        const loginForm = document.getElementById('login-form');
+        const loginContainer = document.getElementById('login-container');
+        const menuContainer = document.getElementById('menu-container');
+        const logoutButton = document.getElementById('logout-button');
+        const usernameInput = document.getElementById('username');
+        const rememberCheckbox = document.getElementById('remember-me');
+
+        // Check login state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('loggedIn') === 'true') {
+                // Show menu if already logged in
+                loginContainer.style.display = 'none';
+                menuContainer.style.opacity = '1';
+                menuContainer.style.visibility = 'visible';
+
+                // Run entrance animations
+                gsap.to("h1", {
+                    duration: 1,
+                    opacity: 1,
+                    scale: 1,
+                    ease: "back.out(1.7)"
+                });
+
+                gsap.to(".menu-button", {
+                    duration: 0.8,
+                    y: 0,
+                    opacity: 1,
+                    ease: "power2.out",
+                    stagger: 0.1
+                });
+            } else {
+                // Load remember me if not logged in
+                if (localStorage.getItem('rememberMe') === 'true') {
+                    usernameInput.value = localStorage.getItem('savedUsername') || '';
+                    passwordInput.value = localStorage.getItem('savedPassword') || '';
+                    rememberCheckbox.checked = true;
                 }
             }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = usernameInput.value;
+            const pass = passwordInput.value;
+
+            if (user === correctUser && pass === correctPass) {
+                // Set logged in state
+                localStorage.setItem('loggedIn', 'true');
+
+                // Save credentials if remember me is checked
+                if (rememberCheckbox.checked) {
+                    localStorage.setItem('rememberMe', 'true');
+                    localStorage.setItem('savedUsername', user);
+                    localStorage.setItem('savedPassword', pass);
+                } else {
+                    localStorage.removeItem('rememberMe');
+                    localStorage.removeItem('savedUsername');
+                    localStorage.removeItem('savedPassword');
+                }
+
+                // Animate out login container
+                gsap.to(loginContainer, {
+                    duration: 0.5,
+                    opacity: 0,
+                    scale: 0.9,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        loginContainer.style.display = 'none';
+                    }
+                });
+
+                // Animate in menu container
+                menuContainer.style.opacity = '1';
+                menuContainer.style.visibility = 'visible';
+                gsap.to(menuContainer, {
+                    duration: 0.5,
+                    opacity: 1,
+                    ease: "power2.out"
+                });
+
+                // Title entrance animation
+                gsap.to("h1", {
+                    duration: 1,
+                    opacity: 1,
+                    scale: 1,
+                    ease: "back.out(1.7)"
+                });
+
+                // Entrance animation for buttons
+                gsap.to(".menu-button", {
+                    duration: 0.8,
+                    y: 0,
+                    opacity: 1,
+                    ease: "power2.out",
+                    stagger: 0.1
+                });
+            } else {
+                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');
             }
-        }
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'lighter';
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
+        });
+
+        // Logout functionality
+        logoutButton.addEventListener('click', () => {
+            // Clear logged in state
+            localStorage.removeItem('loggedIn');
+
+            // Animate out menu container
+            gsap.to(menuContainer, {
+                duration: 0.5,
+                opacity: 0,
+                scale: 0.9,
+                ease: "power2.in",
+                onComplete: () => {
+                    menuContainer.style.opacity = '0';
+                    menuContainer.style.visibility = 'hidden';
+                }
             });
-            requestAnimationFrame(animate);
-        }
-        animate();
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+
+            // Animate in login container
+            loginContainer.style.display = 'flex';
+            gsap.fromTo(loginContainer, 
+                { opacity: 0, scale: 0.9 },
+                {
+                    duration: 0.5,
+                    opacity: 1,
+                    scale: 1,
+                    ease: "power2.out"
+                }
+            );
+
+            // Reset form
+            loginForm.reset();
+            isPasswordVisible = false;
+            passwordInput.type = 'password';
+            eyeIcon.textContent = '👁️';
+        });
+
+        // Hover animations
+        const buttons = document.querySelectorAll(".menu-button");
+        buttons.forEach(button => {
+            const icon = button.querySelector(".icon");
+
+            button.addEventListener("mouseenter", () => {
+                gsap.to(button, {
+                    duration: 0.4,
+                    y: -2,
+                    scale: 1.02,
+                    ease: "power2.out"
+                });
+                gsap.to(icon, {
+                    duration: 0.8,
+                    y: -3,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: "power2.inOut"
+                });
+            });
+
+            button.addEventListener("mouseleave", () => {
+                gsap.to(button, {
+                    duration: 0.4,
+                    y: 0,
+                    scale: 1,
+                    ease: "power2.out"
+                });
+            });
         });
     </script>
 </body>
