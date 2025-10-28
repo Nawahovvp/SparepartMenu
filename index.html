@@ -16,9 +16,10 @@
             align-items: center;
             font-family: 'Inter', sans-serif;
             overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
             background-size: 400% 400%;
             animation: none; /* Remove any CSS animation to let GSAP handle it */
+            filter: grayscale(100%); /* Apply grayscale filter for mourning tone */
         }
         .bubble-background {
             position: fixed;
@@ -29,17 +30,18 @@
             z-index: -1;
         }
         .card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 3rem;
             width: 100%;
             max-width: 500px;
             position: relative;
             z-index: 1;
             overflow: hidden;
+            color: #ffffff; /* White text for contrast on dark background */
         }
         .card::before {
             content: '';
@@ -48,12 +50,12 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #333333, #666666);
         }
         .menu-button {
-            border: 1px solid #e5e7eb;
-            background: #ffffff;
-            color: #374151;
+            border: 1px solid #666666;
+            background: #333333;
+            color: #ffffff;
             font-weight: 500;
             border-radius: 0.75rem;
             position: relative;
@@ -66,6 +68,12 @@
             text-decoration: none;
             opacity: 0;
             transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        .menu-button:hover {
+            background: #555555;
+            border-color: #999999;
+            transform: translateY(-1px);
         }
         .menu-button .icon {
             font-size: 1.25rem;
@@ -73,7 +81,7 @@
         }
         h1 {
             font-family: 'Inter', sans-serif;
-            color: #1f2937;
+            color: #ffffff;
             font-weight: 900;
             letter-spacing: -0.025em;
             font-size: 3rem;
@@ -83,8 +91,8 @@
             transform: scale(0.8);
         }
         .logout-button {
-            background: #ef4444;
-            color: white;
+            background: #666666;
+            color: #ffffff;
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -100,9 +108,9 @@
             width: 100%;
         }
         .logout-button:hover {
-            background: #dc2626;
+            background: #888888;
             transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 5px 15px rgba(102, 102, 102, 0.3);
         }
         .login-container {
             position: fixed;
@@ -110,7 +118,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -118,17 +126,18 @@
             opacity: 1;
         }
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 3rem;
             width: 100%;
             max-width: 400px;
             position: relative;
             z-index: 1;
             overflow: hidden;
+            color: #ffffff;
         }
         .login-card::before {
             content: '';
@@ -137,7 +146,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #333333, #666666);
         }
         .login-input-wrapper {
             position: relative;
@@ -146,11 +155,16 @@
         .login-input {
             width: 100%;
             padding: 1rem 3rem 1rem 1rem;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #666666;
             border-radius: 0.5rem;
             font-family: 'Inter', sans-serif;
             font-size: 1rem;
             box-sizing: border-box;
+            background: #333333;
+            color: #ffffff;
+        }
+        .login-input::placeholder {
+            color: #999999;
         }
         .eye-icon {
             position: absolute;
@@ -160,12 +174,13 @@
             cursor: pointer;
             font-size: 1.25rem;
             user-select: none;
+            color: #ffffff;
         }
         .login-button {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: linear-gradient(135deg, #333333, #666666);
+            color: #ffffff;
             border: none;
             border-radius: 0.5rem;
             font-family: 'Inter', sans-serif;
@@ -175,8 +190,9 @@
             margin-bottom: 1rem;
         }
         .login-button:hover {
+            background: linear-gradient(135deg, #555555, #888888);
             transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 5px 15px rgba(102, 102, 102, 0.3);
         }
         .remember-me {
             display: flex;
@@ -185,7 +201,10 @@
             margin-bottom: 1rem;
             font-family: 'Inter', sans-serif;
             font-size: 0.875rem;
-            color: #374151;
+            color: #ffffff;
+        }
+        .remember-me input[type="checkbox"] {
+            accent-color: #666666;
         }
         .cat-animation {
             display: none; /* ลบแอนิเมชันแมวเพื่อความโมเดิร์น */
@@ -198,12 +217,112 @@
             opacity: 0;
             visibility: hidden;
         }
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+        }
+        .popup-modal {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            max-width: 70vw;
+            max-height: 70vh;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #333333, #666666);
+        }
+        .popup-image {
+            width: 100%;
+            height: auto;
+            max-height: calc(70vh - 2rem);
+            object-fit: contain;
+            border-radius: 0.5rem;
+            opacity: 0; /* ซ่อนรูปตอนแรก */
+            transition: opacity 0.3s ease;
+            filter: grayscale(100%); /* Ensure image is grayscale */
+        }
+        .popup-image.loaded {
+            opacity: 1; /* แสดงรูปเมื่อโหลดเสร็จ */
+        }
+        .loading-spinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            max-height: calc(70vh - 2rem);
+        }
+        .spinner {
+            border: 4px solid #333333;
+            border-top: 4px solid #666666;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .close-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ffffff;
+            font-weight: bold;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .close-btn:hover {
+            background: #666666;
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+        h2 {
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
     <div id="login-container" class="login-container">
         <div class="login-card">
-            <h2 style="font-family: 'Inter', sans-serif; color: #1f2937; font-weight: 700; font-size: 1.75rem; text-align: center; margin-bottom: 2rem;">เข้าสู่ระบบ</h2>
+            <h2 style="font-family: 'Inter', sans-serif; color: #ffffff; font-weight: 700; font-size: 1.75rem; text-align: center; margin-bottom: 2rem;">เข้าสู่ระบบ</h2>
             <form id="login-form">
                 <input type="text" id="username" class="login-input" placeholder="ชื่อผู้ใช้" required>
                 <div class="login-input-wrapper">
@@ -248,9 +367,18 @@
             </button>
         </div>
     </div>
+    <!-- Popup Container -->
+    <div id="popup-container" class="popup-overlay">
+        <div class="popup-modal">
+            <button id="close-popup" class="close-btn">&times;</button>
+            <div class="loading-spinner" id="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <img src="https://i.ibb.co/Ldg4MDRH/Chat-GPT-Image-28-2568-18-56-41.png" alt="รูปภาพ popup" class="popup-image" loading="lazy">
+        </div>
+    </div>
     <script>
         gsap.registerPlugin();
-
         // Background gradient animation with GSAP - smoother with sine.inOut ease
         gsap.to("body", {
             duration: 25,
@@ -259,11 +387,9 @@
             repeat: -1,
             yoyo: true
         });
-
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eye-icon');
         let isPasswordVisible = false;
-
         eyeIcon.addEventListener('click', () => {
             isPasswordVisible = !isPasswordVisible;
             if (isPasswordVisible) {
@@ -274,7 +400,6 @@
                 eyeIcon.textContent = '👁️';
             }
         });
-
         // Login functionality
         const correctUser = 'Admin';
         const correctPass = '1234';
@@ -284,30 +409,79 @@
         const logoutButton = document.getElementById('logout-button');
         const usernameInput = document.getElementById('username');
         const rememberCheckbox = document.getElementById('remember-me');
-
+        // Popup elements
+        const popupContainer = document.getElementById('popup-container');
+        const closePopup = document.getElementById('close-popup');
+        const popupImage = document.querySelector('.popup-image');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        // Preload image
+        function preloadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
+        // Function to show popup with loading
+        async function showPopup() {
+            try {
+                // Preload image before showing popup
+                await preloadImage(popupImage.src);
+                // Hide spinner and show image
+                loadingSpinner.style.display = 'none';
+                popupImage.classList.add('loaded');
+            } catch (error) {
+                console.error('Error loading image:', error);
+                // Fallback: hide spinner anyway
+                loadingSpinner.style.display = 'none';
+                popupImage.classList.add('loaded');
+            }
+            popupContainer.style.display = 'flex';
+            gsap.to(popupContainer, {
+                duration: 0.5,
+                opacity: 1,
+                ease: "power2.out"
+            });
+        }
+        // Function to show menu
+        function showMenu() {
+            menuContainer.style.opacity = '1';
+            menuContainer.style.visibility = 'visible';
+            gsap.to(menuContainer, {
+                duration: 0.5,
+                opacity: 1,
+                ease: "power2.out"
+            });
+            // Title entrance animation
+            gsap.to("h1", {
+                duration: 1,
+                opacity: 1,
+                scale: 1,
+                ease: "back.out(1.7)"
+            });
+            // Entrance animation for buttons
+            gsap.to(".menu-button", {
+                duration: 0.8,
+                y: 0,
+                opacity: 1,
+                ease: "power2.out",
+                stagger: 0.1
+            });
+        }
         // Check login state on load
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('loggedIn') === 'true') {
-                // Show menu if already logged in
+                // Check if popup has been shown in this session using sessionStorage
+                const popupShown = sessionStorage.getItem('popupShown') === 'true';
                 loginContainer.style.display = 'none';
-                menuContainer.style.opacity = '1';
-                menuContainer.style.visibility = 'visible';
-
-                // Run entrance animations
-                gsap.to("h1", {
-                    duration: 1,
-                    opacity: 1,
-                    scale: 1,
-                    ease: "back.out(1.7)"
-                });
-
-                gsap.to(".menu-button", {
-                    duration: 0.8,
-                    y: 0,
-                    opacity: 1,
-                    ease: "power2.out",
-                    stagger: 0.1
-                });
+                if (popupShown) {
+                    // If popup already shown, directly show menu
+                    showMenu();
+                } else {
+                    // Show popup first
+                    showPopup();
+                }
             } else {
                 // Load remember me if not logged in
                 if (localStorage.getItem('rememberMe') === 'true') {
@@ -317,16 +491,15 @@
                 }
             }
         });
-
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const user = usernameInput.value;
             const pass = passwordInput.value;
-
             if (user === correctUser && pass === correctPass) {
                 // Set logged in state
                 localStorage.setItem('loggedIn', 'true');
-
+                // Reset popup shown flag for new login using sessionStorage
+                sessionStorage.setItem('popupShown', 'false');
                 // Save credentials if remember me is checked
                 if (rememberCheckbox.checked) {
                     localStorage.setItem('rememberMe', 'true');
@@ -337,7 +510,6 @@
                     localStorage.removeItem('savedUsername');
                     localStorage.removeItem('savedPassword');
                 }
-
                 // Animate out login container
                 gsap.to(loginContainer, {
                     duration: 0.5,
@@ -346,44 +518,37 @@
                     ease: "power2.in",
                     onComplete: () => {
                         loginContainer.style.display = 'none';
+                        // Show popup after login out (with preloading)
+                        showPopup();
                     }
-                });
-
-                // Animate in menu container
-                menuContainer.style.opacity = '1';
-                menuContainer.style.visibility = 'visible';
-                gsap.to(menuContainer, {
-                    duration: 0.5,
-                    opacity: 1,
-                    ease: "power2.out"
-                });
-
-                // Title entrance animation
-                gsap.to("h1", {
-                    duration: 1,
-                    opacity: 1,
-                    scale: 1,
-                    ease: "back.out(1.7)"
-                });
-
-                // Entrance animation for buttons
-                gsap.to(".menu-button", {
-                    duration: 0.8,
-                    y: 0,
-                    opacity: 1,
-                    ease: "power2.out",
-                    stagger: 0.1
                 });
             } else {
                 alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');
             }
         });
-
+        // Close popup functionality
+        closePopup.addEventListener('click', () => {
+            // Set popup shown flag to true using sessionStorage
+            sessionStorage.setItem('popupShown', 'true');
+            gsap.to(popupContainer, {
+                duration: 0.5,
+                opacity: 0,
+                ease: "power2.in",
+                onComplete: () => {
+                    popupContainer.style.display = 'none';
+                    // Reset image and spinner for next time
+                    loadingSpinner.style.display = 'flex';
+                    popupImage.classList.remove('loaded');
+                    // Show menu after popup close
+                    showMenu();
+                }
+            });
+        });
         // Logout functionality
         logoutButton.addEventListener('click', () => {
-            // Clear logged in state
+            // Clear logged in state and reset popup flag using sessionStorage
             localStorage.removeItem('loggedIn');
-
+            sessionStorage.setItem('popupShown', 'false');
             // Animate out menu container
             gsap.to(menuContainer, {
                 duration: 0.5,
@@ -395,10 +560,9 @@
                     menuContainer.style.visibility = 'hidden';
                 }
             });
-
             // Animate in login container
             loginContainer.style.display = 'flex';
-            gsap.fromTo(loginContainer, 
+            gsap.fromTo(loginContainer,
                 { opacity: 0, scale: 0.9 },
                 {
                     duration: 0.5,
@@ -407,19 +571,16 @@
                     ease: "power2.out"
                 }
             );
-
             // Reset form
             loginForm.reset();
             isPasswordVisible = false;
             passwordInput.type = 'password';
             eyeIcon.textContent = '👁️';
         });
-
         // Hover animations
         const buttons = document.querySelectorAll(".menu-button");
         buttons.forEach(button => {
             const icon = button.querySelector(".icon");
-
             button.addEventListener("mouseenter", () => {
                 gsap.to(button, {
                     duration: 0.4,
@@ -435,7 +596,6 @@
                     ease: "power2.inOut"
                 });
             });
-
             button.addEventListener("mouseleave", () => {
                 gsap.to(button, {
                     duration: 0.4,
