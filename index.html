@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPAREPART MENU</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
         body {
             min-height: 100vh;
             display: flex;
@@ -18,7 +25,7 @@
             overflow: hidden;
             background: linear-gradient(135deg, #000000 0%, #333333 100%);
             background-size: 400% 400%;
-            animation: none; /* Remove any CSS animation to let GSAP handle it */
+            animation: gradient 25s ease-in-out infinite;
             filter: grayscale(100%); /* Apply grayscale filter for mourning tone */
         }
         .bubble-background {
@@ -73,7 +80,7 @@
         .menu-button:hover {
             background: #555555;
             border-color: #999999;
-            transform: translateY(-1px);
+            transform: translateY(-1px) !important;
         }
         .menu-button .icon {
             font-size: 1.25rem;
@@ -89,6 +96,7 @@
             margin-bottom: 2rem;
             opacity: 0;
             transform: scale(0.8);
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         .logout-button {
             background: #666666;
@@ -124,6 +132,7 @@
             align-items: center;
             z-index: 1000;
             opacity: 1;
+            transition: all 0.5s ease;
         }
         .login-card {
             background: rgba(255, 255, 255, 0.1);
@@ -216,6 +225,7 @@
         .menu-container {
             opacity: 0;
             visibility: hidden;
+            transition: all 0.5s ease;
         }
         /* Popup Styles */
         .popup-overlay {
@@ -230,6 +240,7 @@
             align-items: center;
             z-index: 1001;
             opacity: 0;
+            transition: opacity 0.5s ease;
         }
         .popup-modal {
             background: rgba(255, 255, 255, 0.1);
@@ -378,15 +389,6 @@
         </div>
     </div>
     <script>
-        gsap.registerPlugin();
-        // Background gradient animation with GSAP - smoother with sine.inOut ease
-        gsap.to("body", {
-            duration: 25,
-            backgroundPosition: "100% 50%",
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true
-        });
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eye-icon');
         let isPasswordVisible = false;
@@ -438,35 +440,27 @@
                 popupImage.classList.add('loaded');
             }
             popupContainer.style.display = 'flex';
-            gsap.to(popupContainer, {
-                duration: 0.5,
-                opacity: 1,
-                ease: "power2.out"
-            });
+            popupContainer.style.opacity = '1';
         }
         // Function to show menu
         function showMenu() {
-            menuContainer.style.opacity = '1';
             menuContainer.style.visibility = 'visible';
-            gsap.to(menuContainer, {
-                duration: 0.5,
-                opacity: 1,
-                ease: "power2.out"
+            menuContainer.style.opacity = '0';
+            requestAnimationFrame(() => {
+                menuContainer.style.opacity = '1';
             });
             // Title entrance animation
-            gsap.to("h1", {
-                duration: 1,
-                opacity: 1,
-                scale: 1,
-                ease: "back.out(1.7)"
-            });
+            setTimeout(() => {
+                const h1Element = document.querySelector('h1');
+                h1Element.style.opacity = '1';
+                h1Element.style.transform = 'scale(1)';
+            }, 100);
             // Entrance animation for buttons
-            gsap.to(".menu-button", {
-                duration: 0.8,
-                y: 0,
-                opacity: 1,
-                ease: "power2.out",
-                stagger: 0.1
+            document.querySelectorAll('.menu-button').forEach((btn, index) => {
+                setTimeout(() => {
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0px)';
+                }, 200 + index * 100);
             });
         }
         // Check login state on load
@@ -511,17 +505,13 @@
                     localStorage.removeItem('savedPassword');
                 }
                 // Animate out login container
-                gsap.to(loginContainer, {
-                    duration: 0.5,
-                    opacity: 0,
-                    scale: 0.9,
-                    ease: "power2.in",
-                    onComplete: () => {
-                        loginContainer.style.display = 'none';
-                        // Show popup after login out (with preloading)
-                        showPopup();
-                    }
-                });
+                loginContainer.style.opacity = '0';
+                loginContainer.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    loginContainer.style.display = 'none';
+                    // Show popup after login out (with preloading)
+                    showPopup();
+                }, 500);
             } else {
                 alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');
             }
@@ -529,20 +519,16 @@
         // Close popup functionality
         closePopup.addEventListener('click', () => {
             // Set popup shown flag to true using sessionStorage
-            sessionStorage.setItem('popupShown', 'true');
-            gsap.to(popupContainer, {
-                duration: 0.5,
-                opacity: 0,
-                ease: "power2.in",
-                onComplete: () => {
-                    popupContainer.style.display = 'none';
-                    // Reset image and spinner for next time
-                    loadingSpinner.style.display = 'flex';
-                    popupImage.classList.remove('loaded');
-                    // Show menu after popup close
-                    showMenu();
-                }
-            });
+            popupContainer.style.opacity = '0';
+            setTimeout(() => {
+                popupContainer.style.display = 'none';
+                // Reset image and spinner for next time
+                loadingSpinner.style.display = 'flex';
+                popupImage.classList.remove('loaded');
+                sessionStorage.setItem('popupShown', 'true');
+                // Show menu after popup close
+                showMenu();
+            }, 500);
         });
         // Logout functionality
         logoutButton.addEventListener('click', () => {
@@ -550,60 +536,25 @@
             localStorage.removeItem('loggedIn');
             sessionStorage.setItem('popupShown', 'false');
             // Animate out menu container
-            gsap.to(menuContainer, {
-                duration: 0.5,
-                opacity: 0,
-                scale: 0.9,
-                ease: "power2.in",
-                onComplete: () => {
-                    menuContainer.style.opacity = '0';
-                    menuContainer.style.visibility = 'hidden';
-                }
-            });
+            menuContainer.style.opacity = '0';
+            menuContainer.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                menuContainer.style.opacity = '0';
+                menuContainer.style.visibility = 'hidden';
+            }, 500);
             // Animate in login container
             loginContainer.style.display = 'flex';
-            gsap.fromTo(loginContainer,
-                { opacity: 0, scale: 0.9 },
-                {
-                    duration: 0.5,
-                    opacity: 1,
-                    scale: 1,
-                    ease: "power2.out"
-                }
-            );
+            loginContainer.style.opacity = '0';
+            loginContainer.style.transform = 'scale(0.9)';
+            requestAnimationFrame(() => {
+                loginContainer.style.opacity = '1';
+                loginContainer.style.transform = 'scale(1)';
+            });
             // Reset form
             loginForm.reset();
             isPasswordVisible = false;
             passwordInput.type = 'password';
             eyeIcon.textContent = '👁️';
-        });
-        // Hover animations
-        const buttons = document.querySelectorAll(".menu-button");
-        buttons.forEach(button => {
-            const icon = button.querySelector(".icon");
-            button.addEventListener("mouseenter", () => {
-                gsap.to(button, {
-                    duration: 0.4,
-                    y: -2,
-                    scale: 1.02,
-                    ease: "power2.out"
-                });
-                gsap.to(icon, {
-                    duration: 0.8,
-                    y: -3,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: "power2.inOut"
-                });
-            });
-            button.addEventListener("mouseleave", () => {
-                gsap.to(button, {
-                    duration: 0.4,
-                    y: 0,
-                    scale: 1,
-                    ease: "power2.out"
-                });
-            });
         });
     </script>
 </body>
