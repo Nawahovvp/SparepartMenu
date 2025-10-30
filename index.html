@@ -15,6 +15,11 @@
                 background-position: 100% 50%;
             }
         }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
         body {
             min-height: 100vh;
             display: flex;
@@ -147,6 +152,10 @@
             z-index: 1;
             overflow: hidden;
             color: #ffffff;
+            transition: transform 0.3s ease;
+        }
+        .login-card.shake {
+            animation: shake 0.5s ease-in-out;
         }
         .login-card::before {
             content: '';
@@ -171,6 +180,11 @@
             box-sizing: border-box;
             background: #333333;
             color: #ffffff;
+            transition: border-color 0.3s ease;
+        }
+        .login-input:focus {
+            border-color: #999999;
+            outline: none;
         }
         .login-input::placeholder {
             color: #999999;
@@ -198,10 +212,15 @@
             transition: all 0.3s ease;
             margin-bottom: 1rem;
         }
-        .login-button:hover {
+        .login-button:hover:not(:disabled) {
             background: linear-gradient(135deg, #555555, #888888);
             transform: translateY(-1px);
             box-shadow: 0 5px 15px rgba(102, 102, 102, 0.3);
+        }
+        .login-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
         .remember-me {
             display: flex;
@@ -215,6 +234,22 @@
         .remember-me input[type="checkbox"] {
             accent-color: #666666;
         }
+        .error-message {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #ff6b6b;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .cat-animation {
             display: none; /* ลบแอนิเมชันแมวเพื่อความโมเดิร์น */
         }
@@ -227,100 +262,6 @@
             visibility: hidden;
             transition: all 0.5s ease;
         }
-        /* Popup Styles */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .popup-modal {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 1.5rem;
-            padding: 1rem;
-            max-width: 70vw;
-            max-height: 70vh;
-            position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .popup-modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #333333, #666666);
-        }
-        .popup-image {
-            width: 100%;
-            height: auto;
-            max-height: calc(70vh - 2rem);
-            object-fit: contain;
-            border-radius: 0.5rem;
-            opacity: 0; /* ซ่อนรูปตอนแรก */
-            transition: opacity 0.3s ease;
-            filter: grayscale(100%); /* Ensure image is grayscale */
-        }
-        .popup-image.loaded {
-            opacity: 1; /* แสดงรูปเมื่อโหลดเสร็จ */
-        }
-        .loading-spinner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            max-height: calc(70vh - 2rem);
-        }
-        .spinner {
-            border: 4px solid #333333;
-            border-top: 4px solid #666666;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .close-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 2rem;
-            height: 2rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #ffffff;
-            font-weight: bold;
-            z-index: 2;
-            transition: all 0.3s ease;
-        }
-        .close-btn:hover {
-            background: #666666;
-            color: #ffffff;
-            transform: scale(1.1);
-        }
         h2 {
             color: #ffffff !important;
             font-weight: 700;
@@ -332,8 +273,9 @@
 </head>
 <body>
     <div id="login-container" class="login-container">
-        <div class="login-card">
+        <div class="login-card" id="login-card">
             <h2 style="font-family: 'Inter', sans-serif; color: #ffffff; font-weight: 700; font-size: 1.75rem; text-align: center; margin-bottom: 2rem;">เข้าสู่ระบบ</h2>
+            <div id="error-message" class="error-message"></div>
             <form id="login-form">
                 <input type="text" id="username" class="login-input" placeholder="ชื่อผู้ใช้" required>
                 <div class="login-input-wrapper">
@@ -341,9 +283,9 @@
                     <span id="eye-icon" class="eye-icon">👁️</span>
                 </div>
                 <label class="remember-me">
-                    <input type="checkbox" id="remember-me"> จดจำข้อมูล
+                    <input type="checkbox" id="remember-me"> จดจำข้อมูล (บันทึกเฉพาะชื่อผู้ใช้เพื่อความปลอดภัย)
                 </label>
-                <button type="submit" class="login-button">เข้าสู่ระบบ</button>
+                <button type="submit" class="login-button" id="login-button">เข้าสู่ระบบ</button>
             </form>
         </div>
     </div>
@@ -378,20 +320,14 @@
             </button>
         </div>
     </div>
-    <!-- Popup Container -->
-    <div id="popup-container" class="popup-overlay">
-        <div class="popup-modal">
-            <button id="close-popup" class="close-btn">&times;</button>
-            <div class="loading-spinner" id="loading-spinner">
-                <div class="spinner"></div>
-            </div>
-            <img src="https://i.ibb.co/Ldg4MDRH/Chat-GPT-Image-28-2568-18-56-41.png" alt="รูปภาพ popup" class="popup-image" loading="lazy">
-        </div>
-    </div>
     <script>
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eye-icon');
+        const loginButton = document.getElementById('login-button');
+        const loginCard = document.getElementById('login-card');
+        const errorMessage = document.getElementById('error-message');
         let isPasswordVisible = false;
+
         eyeIcon.addEventListener('click', () => {
             isPasswordVisible = !isPasswordVisible;
             if (isPasswordVisible) {
@@ -402,6 +338,7 @@
                 eyeIcon.textContent = '👁️';
             }
         });
+
         // Login functionality
         const correctUser = 'Admin';
         const correctPass = '1234';
@@ -411,37 +348,7 @@
         const logoutButton = document.getElementById('logout-button');
         const usernameInput = document.getElementById('username');
         const rememberCheckbox = document.getElementById('remember-me');
-        // Popup elements
-        const popupContainer = document.getElementById('popup-container');
-        const closePopup = document.getElementById('close-popup');
-        const popupImage = document.querySelector('.popup-image');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        // Preload image
-        function preloadImage(src) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => resolve(img);
-                img.onerror = reject;
-                img.src = src;
-            });
-        }
-        // Function to show popup with loading
-        async function showPopup() {
-            try {
-                // Preload image before showing popup
-                await preloadImage(popupImage.src);
-                // Hide spinner and show image
-                loadingSpinner.style.display = 'none';
-                popupImage.classList.add('loaded');
-            } catch (error) {
-                console.error('Error loading image:', error);
-                // Fallback: hide spinner anyway
-                loadingSpinner.style.display = 'none';
-                popupImage.classList.add('loaded');
-            }
-            popupContainer.style.display = 'flex';
-            popupContainer.style.opacity = '1';
-        }
+
         // Function to show menu
         function showMenu() {
             menuContainer.style.visibility = 'visible';
@@ -463,78 +370,82 @@
                 }, 200 + index * 100);
             });
         }
+
         // Check login state on load
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('loggedIn') === 'true') {
-                // Check if popup has been shown in this session using sessionStorage
-                const popupShown = sessionStorage.getItem('popupShown') === 'true';
                 loginContainer.style.display = 'none';
-                if (popupShown) {
-                    // If popup already shown, directly show menu
-                    showMenu();
-                } else {
-                    // Show popup first
-                    showPopup();
-                }
+                showMenu();
             } else {
-                // Load remember me if not logged in
+                // Load remember me if not logged in (username only for security)
                 if (localStorage.getItem('rememberMe') === 'true') {
                     usernameInput.value = localStorage.getItem('savedUsername') || '';
-                    passwordInput.value = localStorage.getItem('savedPassword') || '';
                     rememberCheckbox.checked = true;
+                    // Password not saved for security
                 }
             }
         });
+
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const user = usernameInput.value;
+            const user = usernameInput.value.trim();
             const pass = passwordInput.value;
-            if (user === correctUser && pass === correctPass) {
-                // Set logged in state
-                localStorage.setItem('loggedIn', 'true');
-                // Reset popup shown flag for new login using sessionStorage
-                sessionStorage.setItem('popupShown', 'false');
-                // Save credentials if remember me is checked
-                if (rememberCheckbox.checked) {
-                    localStorage.setItem('rememberMe', 'true');
-                    localStorage.setItem('savedUsername', user);
-                    localStorage.setItem('savedPassword', pass);
-                } else {
-                    localStorage.removeItem('rememberMe');
-                    localStorage.removeItem('savedUsername');
-                    localStorage.removeItem('savedPassword');
-                }
-                // Animate out login container
-                loginContainer.style.opacity = '0';
-                loginContainer.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    loginContainer.style.display = 'none';
-                    // Show popup after login out (with preloading)
-                    showPopup();
-                }, 500);
-            } else {
-                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');
+
+            // Clear previous error
+            errorMessage.style.display = 'none';
+            loginCard.classList.remove('shake');
+
+            // Validation
+            if (!user || !pass) {
+                errorMessage.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน';
+                errorMessage.style.display = 'block';
+                loginCard.classList.add('shake');
+                return;
             }
-        });
-        // Close popup functionality
-        closePopup.addEventListener('click', () => {
-            // Set popup shown flag to true using sessionStorage
-            popupContainer.style.opacity = '0';
+
+            // Show loading
+            loginButton.textContent = 'กำลังเข้าสู่ระบบ...';
+            loginButton.disabled = true;
+
+            // Simulate a short delay for loading effect (remove in production if using real API)
             setTimeout(() => {
-                popupContainer.style.display = 'none';
-                // Reset image and spinner for next time
-                loadingSpinner.style.display = 'flex';
-                popupImage.classList.remove('loaded');
-                sessionStorage.setItem('popupShown', 'true');
-                // Show menu after popup close
-                showMenu();
-            }, 500);
+                if (user === correctUser && pass === correctPass) {
+                    // Set logged in state
+                    localStorage.setItem('loggedIn', 'true');
+                    // Save credentials if remember me is checked (username only for security)
+                    if (rememberCheckbox.checked) {
+                        localStorage.setItem('rememberMe', 'true');
+                        localStorage.setItem('savedUsername', user);
+                    } else {
+                        localStorage.removeItem('rememberMe');
+                        localStorage.removeItem('savedUsername');
+                    }
+                    // Animate out login container
+                    loginContainer.style.opacity = '0';
+                    loginContainer.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        loginContainer.style.display = 'none';
+                        // Show menu after login out
+                        showMenu();
+                    }, 500);
+                } else {
+                    // Reset button
+                    loginButton.textContent = 'เข้าสู่ระบบ';
+                    loginButton.disabled = false;
+                    // Show error
+                    errorMessage.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!';
+                    errorMessage.style.display = 'block';
+                    loginCard.classList.add('shake');
+                }
+            }, 1000); // 1 second delay for demo
         });
+
         // Logout functionality
         logoutButton.addEventListener('click', () => {
-            // Clear logged in state and reset popup flag using sessionStorage
+            // Clear logged in state
             localStorage.removeItem('loggedIn');
-            sessionStorage.setItem('popupShown', 'false');
+            localStorage.removeItem('savedUsername');
+            localStorage.removeItem('rememberMe');
             // Animate out menu container
             menuContainer.style.opacity = '0';
             menuContainer.style.transform = 'scale(0.9)';
@@ -555,6 +466,8 @@
             isPasswordVisible = false;
             passwordInput.type = 'password';
             eyeIcon.textContent = '👁️';
+            errorMessage.style.display = 'none';
+            loginCard.classList.remove('shake');
         });
     </script>
 </body>
