@@ -299,7 +299,11 @@
                 </a>
                 <a href="https://stockday.vercel.app/" class="menu-button">
                     <span class="icon">📦</span>
-                    รายงาน Stock Day คลังสินค้าทั่วประเทศ
+                    รายงาน Stock Day คลังสินค้า Sparepart
+                </a>
+                <a href="https://gr-recreipt.vercel.app/" class="menu-button">
+                    <span class="icon">📥</span>
+                    รายงานการรับสินค้าคลังสินค้า Sparepart
                 </a>
                 <a href="https://s-crap-x.vercel.app/" class="menu-button">
                     <span class="icon">🔧</span>
@@ -327,7 +331,6 @@
         const loginCard = document.getElementById('login-card');
         const errorMessage = document.getElementById('error-message');
         let isPasswordVisible = false;
-
         eyeIcon.addEventListener('click', () => {
             isPasswordVisible = !isPasswordVisible;
             if (isPasswordVisible) {
@@ -338,7 +341,6 @@
                 eyeIcon.textContent = '👁️';
             }
         });
-
         // Login functionality
         const correctUser = 'Admin';
         const correctPass = '1234';
@@ -348,7 +350,6 @@
         const logoutButton = document.getElementById('logout-button');
         const usernameInput = document.getElementById('username');
         const rememberCheckbox = document.getElementById('remember-me');
-
         // Function to show menu
         function showMenu() {
             menuContainer.style.visibility = 'visible';
@@ -370,7 +371,6 @@
                 }, 200 + index * 100);
             });
         }
-
         // Check login state on load
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('loggedIn') === 'true') {
@@ -385,16 +385,13 @@
                 }
             }
         });
-
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const user = usernameInput.value.trim();
             const pass = passwordInput.value;
-
             // Clear previous error
             errorMessage.style.display = 'none';
             loginCard.classList.remove('shake');
-
             // Validation
             if (!user || !pass) {
                 errorMessage.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน';
@@ -402,11 +399,9 @@
                 loginCard.classList.add('shake');
                 return;
             }
-
             // Show loading
             loginButton.textContent = 'กำลังเข้าสู่ระบบ...';
             loginButton.disabled = true;
-
             // Simulate a short delay for loading effect (remove in production if using real API)
             setTimeout(() => {
                 if (user === correctUser && pass === correctPass) {
@@ -439,7 +434,6 @@
                 }
             }, 1000); // 1 second delay for demo
         });
-
         // Logout functionality
         logoutButton.addEventListener('click', () => {
             // Clear logged in state
