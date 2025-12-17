@@ -21,18 +21,27 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
         body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-            background: linear-gradient(135deg, #000000 0%, #333333 100%);
-            background-size: 400% 400%;
-            animation: gradient 25s ease-in-out infinite;
-            filter: grayscale(100%); /* Apply grayscale filter for mourning tone */
-        }
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+
+    overflow-x: hidden;   /* กันเลื่อนซ้ายขวา */
+    overflow-y: auto;     /* ✅ อนุญาตให้เลื่อนลงได้ */
+
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    background-size: 400% 400%;
+    animation: gradient 25s ease-in-out infinite;
+    filter: grayscale(100%);
+}
+.card{
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
         .bubble-background {
             position: fixed;
             top: 0;
