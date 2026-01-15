@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPAREPART MENU</title>
+    <title>SPAREPART MANAGEMENT SYSTEM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
@@ -58,7 +58,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 3rem;
             width: 100%;
-            max-width: 500px;
+            max-width: 1000px;
             position: relative;
             z-index: 1;
             overflow: hidden;
@@ -82,57 +82,141 @@
             position: relative;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
+            padding: 2rem;
             text-decoration: none;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
         }
         .menu-button:hover {
             background: #555555;
             border-color: #999999;
-            transform: translateY(-1px) !important;
+            transform: translateY(-5px) !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         .menu-button .icon {
-            font-size: 1.25rem;
+            font-size: 3rem;
             flex-shrink: 0;
+            margin-bottom: 0.5rem;
         }
         h1 {
             font-family: 'Inter', sans-serif;
-            color: #ffffff;
+            background: linear-gradient(to bottom, #ffffff 0%, #adadad 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             font-weight: 900;
             letter-spacing: -0.025em;
-            font-size: 3rem;
+            font-size: 4rem !important;
+            line-height: 1.1;
             text-align: center;
-            margin-bottom: 2rem;
+            margin: 0;
             opacity: 0;
             transform: scale(0.8);
             transition: opacity 1s ease-out, transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 10;
         }
-        .logout-button {
-            background: #666666;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .header-cover {
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 100%);
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+        .header-cover::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+        .user-menu-container {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            z-index: 20;
+        }
+        .user-badge {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 1.5rem;
-            width: 100%;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .logout-button:hover {
-            background: #888888;
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 102, 102, 0.3);
+        .user-badge:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 0.5rem;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+        .user-menu-container:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: none;
+            color: #ff6b6b;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
         .login-container {
             position: fixed;
@@ -278,6 +362,12 @@
             text-align: center;
             margin-bottom: 2rem;
         }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem;
+        }
     </style>
 </head>
 <body>
@@ -298,14 +388,27 @@
             </form>
         </div>
     </div>
-    <div id="menu-container" class="menu-container">
-        <div class="card">
-            <h1 class="mb-8">SPAREPART MENU</h1>
-            <div class="space-y-3">
+    <div id="menu-container" class="menu-container" style="width: 100%; padding: 0 0 3rem 0;">
+            <div class="header-cover">
+                <div class="user-menu-container">
+                    <div class="user-badge">
+                        <span>👤</span>
+                        <span id="user-display-name">User</span>
+                        <span style="font-size: 0.8em">▼</span>
+                    </div>
+                    <div class="user-dropdown">
+                        <button id="logout-button" class="dropdown-item">
+                            <span>🚪</span> Log out
+                        </button>
+                    </div>
+                </div>
+                <h1>SPAREPART MANAGEMENT SYSTEM</h1>
+            </div>
+            <div class="menu-grid">
                 <!-- เพิ่มเมนูใหม่ด้านบนสุด -->
                  <a href="https://abc-move-all-plant-bnk.vercel.app/" class="menu-button">
                     <span class="icon">📊</span>
-                    ABC Analysis All Plant Managment
+                    ABC–Shortship Smart Ordering System
                 </a>
                 <a href="https://abc-move-all-plant-all-managment-a1.vercel.app/" class="menu-button">
                     <span class="icon">📊</span>
@@ -340,11 +443,6 @@
                     Dashboard TSC Management
                 </a>
             </div>
-            <button id="logout-button" class="logout-button">
-                <span>🚪</span>
-                Log out
-            </button>
-        </div>
     </div>
     <script>
         const passwordInput = document.getElementById('password');
@@ -397,6 +495,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('loggedIn') === 'true') {
                 loginContainer.style.display = 'none';
+                const currentUser = localStorage.getItem('currentUser') || 'Admin';
+                document.getElementById('user-display-name').textContent = currentUser;
                 showMenu();
             } else {
                 // Load remember me if not logged in (username only for security)
@@ -429,6 +529,8 @@
                 if (user === correctUser && pass === correctPass) {
                     // Set logged in state
                     localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('currentUser', user);
+                    document.getElementById('user-display-name').textContent = user;
                     // Save credentials if remember me is checked (username only for security)
                     if (rememberCheckbox.checked) {
                         localStorage.setItem('rememberMe', 'true');
@@ -462,6 +564,7 @@
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('savedUsername');
             localStorage.removeItem('rememberMe');
+            localStorage.removeItem('currentUser');
             // Animate out menu container
             menuContainer.style.opacity = '0';
             menuContainer.style.transform = 'scale(0.9)';
